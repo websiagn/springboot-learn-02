@@ -1,0 +1,20 @@
+package com.example.springbootlearn02.config;
+
+import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+//@Configuration
+//public class MyBatisConfig {
+//    @Bean
+//    public ConfigurationCustomizer configurationCustomizer(){
+//        return new  ConfigurationCustomizer(){
+//
+//            @Override
+//            public void customize(org.apache.ibatis.session.Configuration configuration) {
+//                // 配置驼峰命名匹配规则
+//                configuration.setMapUnderscoreToCamelCase(true);
+//            }
+//        };
+//    }
+//}
