@@ -1,6 +1,7 @@
 package com.example.springbootlearn02;
 
 import com.baomidou.mybatisplus.extension.api.Assert;
+import com.example.springbootlearn02.bean.Book;
 import com.example.springbootlearn02.bean.Employee;
 import com.example.springbootlearn02.bean.User;
 import com.example.springbootlearn02.mapper.EmployeeMapper;
@@ -97,6 +98,25 @@ class SpringbootLearn02ApplicationTests {
         map.put("msg","这是第一个消息");
         map.put("data", Arrays.asList("He",123,true));
         // 对象默认序列化以后发生出去
-        rabbitTemplate.convertAndSend("exchange.direct","baidu.news",map);
+        rabbitTemplate.convertAndSend("exchange.direct","baidu.news",new Book("西游记","吴承恩"));
+    }
+
+
+    /**
+     * 接收消息
+     */
+    @Test
+    public void receive(){
+        Object o = rabbitTemplate.receiveAndConvert("baidu.news");
+        System.out.println(o.getClass());
+        System.out.println(o);
+    }
+
+    /**
+     * 广播
+     */
+    @Test
+    public void broadcast(){
+        rabbitTemplate.convertAndSend("exchange.fanout","baidu",new Book("西游记","吴雪琴"));
     }
 }
