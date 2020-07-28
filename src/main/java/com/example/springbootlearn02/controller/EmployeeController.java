@@ -1,6 +1,6 @@
 package com.example.springbootlearn02.controller;
 
-import com.example.springbootlearn02.EmployeeService;
+import com.example.springbootlearn02.service.EmployeeService;
 import com.example.springbootlearn02.bean.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
