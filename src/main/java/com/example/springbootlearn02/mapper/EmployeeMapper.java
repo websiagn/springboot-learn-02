@@ -16,5 +16,5 @@ public interface EmployeeMapper {
     public int deleteEmp(Integer id);
 
     @Update("UPDATE employee SET lastName=#{lastName},email=#{email},gender=#{gender},d_id=#{dId} WHERE id=#{id}")
-    public int updateEmp(Employee employee);
+    public Employee updateEmp(Employee employee);
 }

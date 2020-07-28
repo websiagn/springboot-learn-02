@@ -3,6 +3,7 @@ package com.example.springbootlearn02.service;
 import com.example.springbootlearn02.bean.Employee;
 import com.example.springbootlearn02.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -51,12 +52,12 @@ public class EmployeeService {
      *   unless:否定缓存，当unless指定的条件为true，方法的返回值就不会被缓存；可以获取到结果进行判断
      *      unless = "#result == null"
      *      unless = "#a0 == 2":如果第一个参数的值是2.结果不缓存
-     *   sync: 是否使用异步模式
+     *   sync: 是否使用同步模式
      * @param id
      * @return
      */
-//    @Cacheable(value = {"emp"}, key = "#root.methodName + '[' + #id + ']'")
-    @Cacheable(cacheNames ={"emp"}, keyGenerator = "myKeyGenerator")
+//    @Cacheable(value = {"emp"}, key = "#root.methodName + '[' + #id + ']'")  // 使用指定的keyGenerator
+    @Cacheable(cacheNames ={"emp"}, keyGenerator = "myKeyGenerator", condition = "#a0>1", unless = "#a0==2")
     public Employee getEmpById(Integer id) {
         System.out.println("查询" + id + "号客户");
         return employeeMapper.getEmpById(id);
@@ -64,5 +65,10 @@ public class EmployeeService {
 
     public int addEmp(Employee employee){
         return employeeMapper.insertEmp(employee);
+    }
+
+    @CachePut
+    public Employee updateEmp(Employee employee){
+        return employeeMapper.updateEmp(employee);
     }
 }
