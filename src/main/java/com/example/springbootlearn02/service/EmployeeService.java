@@ -3,6 +3,7 @@ package com.example.springbootlearn02.service;
 import com.example.springbootlearn02.bean.Employee;
 import com.example.springbootlearn02.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,8 @@ public class EmployeeService {
      * @return
      */
 //    @Cacheable(value = {"emp"}, key = "#root.methodName + '[' + #id + ']'")  // 使用指定的keyGenerator
-    @Cacheable(cacheNames ={"emp"}, keyGenerator = "myKeyGenerator", condition = "#a0>1", unless = "#a0==2")
+//    @Cacheable(cacheNames ={"emp"}, keyGenerator = "myKeyGenerator", condition = "#a0>1", unless = "#a0==2")
+    @Cacheable(value = {"emp"})
     public Employee getEmpById(Integer id) {
         System.out.println("查询" + id + "号客户");
         return employeeMapper.getEmpById(id);
@@ -67,8 +69,32 @@ public class EmployeeService {
         return employeeMapper.insertEmp(employee);
     }
 
-    @CachePut
+    /**
+     * @CachePut：既调用方法，又更新缓存数据，同步更新缓存
+     * 修改了数据库某个数据，同时更新缓存
+     * 运行时机：
+     *  1、先调用目标方法
+     *  2、将目标方法的结果缓存起来
+     *
+     *   @Cacheable的key是不能用#result
+     * @param employee
+     * @return
+     */
+    @CachePut(value = "emp", key = "#employee.id")
     public Employee updateEmp(Employee employee){
-        return employeeMapper.updateEmp(employee);
+        employeeMapper.updateEmp(employee);
+        return employee;
+    }
+
+    /**
+     * key:指定要删除的缓存数据 key
+     * allEntries:指定删除所有缓存数据
+     * beforeInvocation: 在方法执行前是否执行清除缓存
+     * @param id
+     */
+    @CacheEvict(value = "emp", key = "#id"/*, beforeInvocation = true*//* allEntries = true*/)
+    public void deleteEmp(Integer id){
+        System.out.println("删除" + id + "号员工");
+//        employeeMapper.deleteEmp(id);
     }
 }
