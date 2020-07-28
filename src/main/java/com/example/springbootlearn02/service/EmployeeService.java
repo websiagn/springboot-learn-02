@@ -12,6 +12,29 @@ public class EmployeeService {
     EmployeeMapper employeeMapper;
 
     /**
+     *  运行流程：
+     * @Cacheable:
+     * 1、方法运行之前，先去查询Cache（缓存组件），按照cacheNames指定的名称获取：
+     * （CacheManager先去获取相应的缓存），第一次获取缓存如果没有Cache组件会自动创建
+     * 2、去Cache中查找缓存的内容，使用一个key，默认就是方法的参数
+     *      key是按照某种策略生成的：默认是使用KeyGenerator生成的，默认使用SimpleKeyGenerator
+     *          SimpleKeyGenerator生成Key的默认策略：
+     *              如果没有参数：key=new SimpleKey()
+     *              如果有一个参数：key=参数的值
+     *              如果有多个参数：key=new SimpleKey(params)
+     * 3、没有查到缓存就调用目标方法
+     * 4、将目标方法返回的结果，放进缓存中
+     *
+     * @Cacheable标记的方法执行之前先来检查缓存中有没有这个数据，默认按照参数的值作为key去查询缓存
+     * 如果没有就运行方法并将结果放入缓存：以后再来调用亏可以直接使用缓存中的数据；
+     *
+     * 核心：
+     *  1）、使用CacheManager【ConcurrentMapCacheManager默认】按照名字得到Cache【ConcurrentMapCache默认】组件
+     *  2）、key使用keyGenerator生成的，默认是SimpleKeyGenerator
+     *
+     */
+
+    /**
      * 将方法的运行结果进行缓存，以后再要用到相同的数据，直接从缓存中获取，不用调用方法
      *
      * 几个属性：
@@ -32,7 +55,8 @@ public class EmployeeService {
      * @param id
      * @return
      */
-    @Cacheable(value = {"emp"})
+//    @Cacheable(value = {"emp"}, key = "#root.methodName + '[' + #id + ']'")
+    @Cacheable(cacheNames ={"emp"}, keyGenerator = "myKeyGenerator")
     public Employee getEmpById(Integer id) {
         System.out.println("查询" + id + "号客户");
         return employeeMapper.getEmpById(id);
