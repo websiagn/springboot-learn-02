@@ -17,4 +17,7 @@ public interface EmployeeMapper {
 
     @Update("UPDATE employee SET lastName=#{lastName},email=#{email},gender=#{gender},d_id=#{dId} WHERE id=#{id}")
     public int updateEmp(Employee employee);
+
+    @Select("SELECT * FROM employee WHERE lastName=#{lastName}")
+    Employee getEmpByLastName(String lastName);
 }

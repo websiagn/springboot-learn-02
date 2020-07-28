@@ -3,10 +3,7 @@ package com.example.springbootlearn02.service;
 import com.example.springbootlearn02.bean.Employee;
 import com.example.springbootlearn02.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 @CacheConfig(cacheNames = "emp")
@@ -98,5 +95,19 @@ public class EmployeeService {
     public void deleteEmp(Integer id){
         System.out.println("删除" + id + "号员工");
 //        employeeMapper.deleteEmp(id);
+    }
+
+    @Caching(
+            cacheable = {
+                    @Cacheable(key = "#lastName")
+            },
+            put = {
+                    @CachePut(key = "#result.id"),
+                    @CachePut(key = "#result.email")
+            }
+    )
+    public Employee getEmpByLastName(String lastName) {
+        System.out.println("查询名字为" + lastName + "客户");
+        return employeeMapper.getEmpByLastName(lastName);
     }
 }
