@@ -1,11 +1,14 @@
 package com.example.springbootlearn02;
 
 import com.baomidou.mybatisplus.extension.api.Assert;
+import com.example.springbootlearn02.bean.Article;
 import com.example.springbootlearn02.bean.Book;
 import com.example.springbootlearn02.bean.Employee;
 import com.example.springbootlearn02.bean.User;
 import com.example.springbootlearn02.mapper.EmployeeMapper;
 import com.example.springbootlearn02.mapper.UserMapper;
+import io.searchbox.client.JestClient;
+import io.searchbox.core.Index;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
@@ -17,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +43,11 @@ class SpringbootLearn02ApplicationTests {
 
     @Autowired
     private AmqpAdmin amqpAdmin;
+
+    @Test
+    public void contextLoad(){
+        System.out.println("hello");
+    }
 
     @Test
     public void testAmqpAdmin(){
