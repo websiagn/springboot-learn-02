@@ -7,6 +7,10 @@ import com.example.springbootlearn02.bean.User;
 import com.example.springbootlearn02.mapper.EmployeeMapper;
 import com.example.springbootlearn02.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +36,21 @@ class SpringbootLearn02ApplicationTests {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private AmqpAdmin amqpAdmin;
+
+    @Test
+    public void testAmqpAdmin(){
+//        amqpAdmin.declareExchange(new DirectExchange("amqp.exchange"));
+//        System.out.println("创建交换器成功");
+
+//        amqpAdmin.declareQueue(new Queue("amqp.queue", true));
+//        System.out.println("创建队列成功");
+
+        amqpAdmin.declareBinding(new Binding("amqp.queue",Binding.DestinationType.QUEUE,"amqp.exchange","amqp.news",null));
+        System.out.println("绑定");
+    }
 
     @Test
     public void testSelect() {

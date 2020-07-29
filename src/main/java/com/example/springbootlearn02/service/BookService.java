@@ -13,8 +13,8 @@ public class BookService {
         System.out.println("收到消息" + book);
     }
 
-    @RabbitListener(queues = {"baidu.new"})
-    public void recerive(Message message){
-        System.out.println(message.getBody());
-    }
+//    @RabbitListener(queues = {"baidu.new"})
+//    public void recerive(Message message){
+//        System.out.println(message.getBody());
+//    }
 }
